@@ -1,0 +1,6 @@
+@FourOneShot.Pi.API_HostAddress = http://localhost:25306
+
+GET {{FourOneShot.Pi.API_HostAddress}}/api/blinds/
+Accept: application/json
+
+###

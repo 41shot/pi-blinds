@@ -1,0 +1,104 @@
+﻿@page "/Maintenance"
+@using System.Runtime.InteropServices
+@using FourOneShot.Pi.Blinds.Http
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Logging
+@inject ILogger<Maintenance> Logger
+@inject IConfiguration Configuration
+@inject IJSRuntime JSRuntime
+@inject BlindsApiClient ApiClient
+@rendermode InteractiveServer
+
+<PageTitle>Maintenance</PageTitle>
+
+<h1>Maintenance</h1>
+<br />
+
+<h3>Manual Control</h3>
+
+<div class="tile-container">
+    <div class="digit-display">@_channel.ToString().PadLeft(2, '0')</div>
+</div>
+<br />
+<div>
+    <button class="btn btn-primary btn-large" @onclick="Open">Open</button>
+    <button class="btn btn-primary btn-large" @onclick="Stop">Stop</button>
+    <button class="btn btn-primary btn-large" @onclick="Close">Close</button>
+</div>
+<br />
+<div>
+    <button class="btn btn-primary btn-large" @onclick="ChannelUp">Ch. Up</button>
+    <button class="btn btn-primary btn-large" @onclick="ChannelDown">Ch. Down</button>
+</div>
+<br />
+<div>
+    <button class="btn btn-primary btn-large" @onclick="WakeUp">Wake Up</button>
+    <button class="btn btn-primary btn-large" @onclick="Reset">Reset</button>
+    <button class="btn btn-primary btn-large" @onclick="Pair">Pair</button>
+</div>
+
+@code {
+    private int? _channel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshChannel();
+    }
+
+    private async Task RefreshChannel()
+    {
+        _channel = await ApiClient.GetChannel();
+        Logger.LogInformation("Refreshed channel");
+    }
+
+    private async Task Open()
+    {
+        await ApiClient.Open();
+        Logger.LogInformation("Open button pressed");
+    }
+
+    private async Task Close()
+    {
+        await ApiClient.Close();
+        Logger.LogInformation("Close button pressed");
+    }
+
+    private async Task Stop()
+    {
+        await ApiClient.Stop();
+        Logger.LogInformation("Stop button pressed");
+    }
+
+    private async Task ChannelUp()
+    {
+        await ApiClient.ChannelUp();
+        Logger.LogInformation("Channel Up button pressed");
+        await RefreshChannel();
+    }
+
+    private async Task ChannelDown()
+    {
+        await ApiClient.ChannelDown();
+        Logger.LogInformation("Channel Down button pressed");
+        await RefreshChannel();
+    }
+
+    private async Task Reset()
+    {
+        await ApiClient.Reset();
+        Logger.LogInformation("Reset button pressed");
+        await RefreshChannel();
+    }
+
+    private async Task Pair()
+    {
+        await ApiClient.Pair();
+        Logger.LogInformation("Pair button pressed");
+    }
+
+    private async Task WakeUp()
+    {
+        await ApiClient.ChannelLimit();
+        Logger.LogInformation("Wake Up button pressed");
+    }
+}

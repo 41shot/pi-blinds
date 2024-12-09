@@ -1,0 +1,99 @@
+﻿@page "/"
+@using System.Runtime.InteropServices
+@using FourOneShot.Pi.Blinds.Http
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Logging
+@inject ILogger<Home> Logger
+@inject IConfiguration Configuration
+@inject IJSRuntime JSRuntime
+@inject BlindsApiClient ApiClient
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Home</h1>
+
+<p><small>V1.3.10</small></p>
+
+<h3>Blinds</h3>
+
+<div>
+ <big>
+    <select @onchange="OnChannelSelected">
+        @if (_channel == null || !_blindChannelMappings.ContainsValue(_channel.Value))
+        {
+            <option value="">Select Channel</option>
+        }
+        @foreach (var channel in _blindChannelMappings)
+        {
+            @if (channel.Value == _channel)
+            {
+                <option value="@channel.Value" selected>@channel.Key</option>
+            }
+            else
+            {
+                <option value="@channel.Value">@channel.Key</option>
+            }
+        }
+    </select>
+</big>
+</div>
+<br />
+<div>
+    <button class="btn btn-primary btn-xl" @onclick="Open">Open</button><br />
+    <button class="btn btn-primary btn-xl" @onclick="Stop">Stop</button><br />
+    <button class="btn btn-primary btn-xl" @onclick="Close">Close</button><br />
+</div>
+<div>
+
+</div>
+<div>
+
+</div>
+
+@code {
+    private int _initialisationCount = 0;
+    private Dictionary<string, int> _blindChannelMappings;
+    private int? _channel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blindChannelMappings = Configuration.GetSection("BlindChannelMappings")
+            .Get<Dictionary<string, int>>();
+
+        await RefreshChannel();
+    }
+
+    private async Task Open()
+    {
+        await ApiClient.Open();
+        Logger.LogInformation("Open button pressed");
+    }
+
+    private async Task Close()
+    {
+        await ApiClient.Close();
+        Logger.LogInformation("Close button pressed");
+    }
+
+    private async Task Stop()
+    {
+        await ApiClient.Stop();
+        Logger.LogInformation("Stop button pressed");
+    }
+
+    private async Task RefreshChannel()
+    {
+        _channel = await ApiClient.GetChannel();
+    }
+
+    private async Task OnChannelSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int selectedChannel))
+        {
+            await ApiClient.SetChannel(selectedChannel);
+            Logger.LogInformation("Channel selected.");
+            await RefreshChannel();
+        }
+    }
+}

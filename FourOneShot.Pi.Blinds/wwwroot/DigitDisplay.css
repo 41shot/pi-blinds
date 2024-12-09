@@ -1,0 +1,12 @@
+﻿/* Style for digit container */
+.digit-display {
+    font-family: monospace;
+    font-size: 3em;
+    color: #000000;
+    padding: 10px 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 0 5px;
+    width: 1em;
+    text-align: center;
+}
