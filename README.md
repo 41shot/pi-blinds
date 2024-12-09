@@ -1,25 +1,25 @@
 # FourOneShot.Pi.Blinds
 A Blazor web app and .NET web API for Raspberry Pi, for controlling window roller blinds.
-## Hardware
-The project requires a Raspberry Pi with network connectivity and GPIO pins, a relay module with at least 6 relays and a sacrificial remote control for the blinds.
-The GPIO pins are used to control the relays and the relay outputs (NC and common) are wired directly across the remote control switches to emulate button presses.
 
-The remote control used in this project is a Doya DD2702H (re-branded for the local retailer).
+## Hardware
+The project requires a Raspberry Pi with network connectivity and GPIO pins, a relay module with at least 6 relays and a sacrificial remote-control for the blinds.
+The GPIO pins are used to control the relays and the relay outputs (NC and common) are wired directly across the remote-control switches to emulate button presses.
+
+The remote-control used in this project is a Doya DD2702H (re-branded for the local retailer).
 Any similar remote can work if it has the same button functions and sleep behaviour, or you can copy the code from DD2702H.cs to a new class and modify to suit your remote.
 
-Relays are optional, if you manage to drive the remote control MCU input pins directly from the Pi's GPIO (not so simple if the remote uses a pull-up configuration).
+Relays are optional, if you manage to drive the remote-control MCU input pins directly from the Pi's GPIO (not so simple if the remote uses a pull-up configuration).
 Or you can use FETs, opto-couplers, etc. However, relays are a simple brute-force method if you don't want to spend too much time reverse engineering the remote circuit.
 
 Aside from powering the Raspberry Pi, you might need a higher voltage (9-12V) supply for your relay module. USB-C PD "trigger" boards with voltage selection can be useful.
-You may be able to power the remote control directly from the 3.3V rail of the Raspberry Pi, or you can keep it isolated by using a battery source.
+You may be able to power the remote-control directly from the 3.3V rail of the Raspberry Pi, or you can keep it isolated by using a battery source.
 
-![image](https://github.com/user-attachments/assets/7b70b774-7998-4d86-bd50-621639355f7d)
+![blinds-controller-hardware](https://github.com/user-attachments/assets/7e759ee0-bec8-480d-b968-56d8ec6dd607)
 
 ## Environment set-up
-These are the rough steps to follow, but expect some glaring omissions or innacuracies.
-It requires some working knowledge of .NET development and Debian Linux (or alternatively, liberal use of search engines and AI helper tools).
+These are the rough steps to follow, but expect some glaring omissions or inacuracies.
 
-Pre-requisite: All the hardware should already be set-up at this point and the remote control should be paired with the blinds you want to control.
+Pre-requisite: All the hardware should already be set-up at this point and the remote-control should be paired with the blinds you want to control.
 
 1.) Set-up the Raspberry Pi with Pi OS and connect it to your local network.
 
@@ -33,7 +33,7 @@ Pre-requisite: All the hardware should already be set-up at this point and the r
 
 5.) Open the solution and ensure it builds without errors.
 
-6.) Open appsettings.json in the API project and edit the channel mappings to match your remote control and blinds.
+6.) Open appsettings.json in the API project and edit the channel mappings to match your remote-control and blinds.
 
 7.) Publish the web app and API projects for linux-arm64, using the self-contained option.
 
@@ -47,13 +47,13 @@ Pre-requisite: All the hardware should already be set-up at this point and the r
 
 12.) Add service configurations for the web app and API, so that they start automatically after booting Pi OS.
 
-13.) Re-boot the Pi and use the systemctl status command command to ensure both services are running.
+13.) Re-boot the Pi and use the systemctl status command to ensure both services are running.
 
 14.) Try to browse to http://localhost:5001/ on the Pi desktop and cross your fingers.
 
 15.) If that works (or you're running Pi OS headless), browse to that port on the Pi's address from another host.
 
-![image](https://github.com/user-attachments/assets/95b3bf93-6a17-4606-a95b-ab95248a3020)
+![blinds-web-home](https://github.com/user-attachments/assets/9d7e5bce-f9c0-4933-ad18-6f3599d95a4a)
 
 ## Automation
 
