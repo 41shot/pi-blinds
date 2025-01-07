@@ -12,6 +12,12 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
+.btn-icon {
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+}
+
 .btn-large {
     width: 120px;
     height: 40px;
