@@ -15,8 +15,8 @@ namespace FourOneShot.Pi.Devices
     {
         protected const int MinChannel = 0;
         protected const int MaxChannel = 15;
-        protected const int ButtonPressMilliseconds = 220;
-        protected const int SwitchDebounceMilliseconds = 110;
+        protected const int ButtonPressMilliseconds = 240;
+        protected const int SwitchDebounceMilliseconds = 120;
         protected const int BrownOutWaitMilliseconds = 1500;
         protected const int StartUpWaitMilliseconds = 2500;
         protected const int PairingMilliseconds = 4000;
